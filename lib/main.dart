@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:poemer/network/controllers/books_controller.dart';
 import 'package:poemer/presentation/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -13,6 +14,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await Get.putAsync(() async => DirectoriesController());
+  await Get.putAsync(() async => BooksController());
   runApp(const MyApp());
 }
 

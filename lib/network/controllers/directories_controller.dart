@@ -9,16 +9,14 @@ class DirectoriesController extends GetxController with StateMixin {
   final RxList<Directory> directories = <Directory>[].obs;
   final DirectoryFactory _factory = DirectoryFactory();
   final TextEditingController newDirectoryNameController = TextEditingController();
-  FirebaseFirestore firebase = FirebaseFirestore.instance;
+  final FirebaseFirestore firebase = FirebaseFirestore.instance;
 
   @override
   Future<void> onInit() async {
-    print(firebase.app.name);
-
     await FirebaseFirestore.instance.enableNetwork();
     QuerySnapshot snapshot = await firebase
         .collection(
-          PoemerStrings.directories,
+          PoemerStrings.directoriesCollection,
         )
         .get();
     directories.addAll(_factory.toDomainList(snapshot.docs));
@@ -29,7 +27,7 @@ class DirectoriesController extends GetxController with StateMixin {
   Future<void> addNewDirectory(String name) async {
    DocumentReference directoryMap =  await firebase
         .collection(
-          PoemerStrings.directories,
+          PoemerStrings.directoriesCollection,
         )
         .add(_factory.toMap(name));
    Directory directory = _factory.toDomain(await directoryMap.get());

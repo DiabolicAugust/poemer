@@ -26,6 +26,17 @@ class MyApp extends StatelessWidget {
       builder:(context,_)=>  GetMaterialApp(
         initialBinding: DirectoriesBinding(),
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          textTheme: TextTheme(
+            bodyMedium: TextStyle(
+              fontSize: 65.sp
+            ),
+            bodySmall: TextStyle(
+              fontSize: 45.sp,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
         home:  HomePage(),
       ),
     );

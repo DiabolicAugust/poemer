@@ -27,14 +27,81 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: [
               directoriesController.obx(
-                (state) => ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: state.length,
-                  itemBuilder: (context, index)=> ListTile(
-                    title: Text(state[index].name),
-                    contentPadding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 80.w),
-                  ),
-                ),
+                (state) => state.length > 0
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.length,
+                        itemBuilder: (context, index) => ListTile(
+                          title: Text(
+                            state[index].name,
+                            style: TextStyle(
+                              fontSize: 45.sp,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 50.h,
+                            horizontal: 80.w,
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              PoemerStrings.yourWorkspaceIsEmpty,
+                              style: Get.theme.textTheme.bodyMedium,
+                            ),
+                            TextButton(
+                              onPressed: () async =>
+                                  await Get.dialog(AlertDialog(
+                                insetPadding:
+                                    EdgeInsets.symmetric(vertical: 350.h),
+                                content: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TextFormField(
+                                      controller: directoriesController
+                                          .newDirectoryNameController,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        FilledButton(
+                                          onPressed: () async{
+                                            await directoriesController
+                                              .addNewDirectory(
+                                                  directoriesController
+                                                      .newDirectoryNameController
+                                                      .text);
+                                            Get.back();
+                                          },
+                                          child: Text(
+                                            PoemerStrings.add,
+                                            style: Get.textTheme.bodySmall,
+                                          ),
+                                        ),
+                                        FilledButton(
+                                          onPressed: () => Get.back(),
+                                          child: Text(
+                                            PoemerStrings.close,
+                                            style: Get.textTheme.bodySmall,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )),
+                              child: Text(
+                                PoemerStrings.createNewDirectory,
+                                style: Get.theme.textTheme.bodyMedium,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                 onLoading: Center(
                   child: CircularProgressIndicator.adaptive(),
                 ),

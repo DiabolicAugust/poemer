@@ -12,4 +12,8 @@ class DirectoryFactory{
   List<Directory> toDomainList(List<DocumentSnapshot> docs){
     return docs.map((e) => toDomain(e)).toList();
   }
+
+  Map<String, dynamic> toMap(String name) => {
+    _nameKey: name
+  };
 }

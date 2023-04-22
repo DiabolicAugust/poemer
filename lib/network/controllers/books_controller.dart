@@ -40,4 +40,6 @@ class BooksController extends GetxController with StateMixin {
     );
     change(books, status: RxStatus.success());
   }
+
+
 }

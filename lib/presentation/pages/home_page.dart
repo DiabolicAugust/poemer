@@ -5,6 +5,7 @@ import 'package:poemer/assets/strings.dart';
 import 'package:poemer/domain/model/directory_model.dart';
 import 'package:poemer/network/controllers/books_controller.dart';
 import 'package:poemer/network/controllers/directories_controller.dart';
+import 'package:poemer/presentation/pages/book_content_page.dart';
 import 'package:poemer/presentation/widgets/creation_dialog.dart';
 
 class HomePage extends StatelessWidget {
@@ -28,6 +29,7 @@ class HomePage extends StatelessWidget {
           height: 1080.h,
           width: 1920.w,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               directoriesController.obx(
                 (state) => state.length > 0
@@ -82,6 +84,10 @@ class _BuildDirectoriesListState extends State<_BuildDirectoriesList> {
                   fontSize: 45.sp,
                 ),
               ),
+              collapsedShape: RoundedRectangleBorder(
+                side: BorderSide(color: Get.theme.primaryColor, width: 1.w),
+                borderRadius: BorderRadius.circular(15.r),
+              ),
               tilePadding: EdgeInsets.symmetric(
                 horizontal: 30.w,
                 vertical: 50.h,
@@ -106,17 +112,39 @@ class _BuildDirectoriesListState extends State<_BuildDirectoriesList> {
         if (booksController.books.isNotEmpty)
           Column(
             children: [
-              ListView.builder(
+              GridView.builder(
+                padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: booksController.books.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      booksController.books[index].name,
-                      style: Get.textTheme.bodySmall,
-                    ),
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: () => Get.to(() => BookContentPage(
+                              bookId: booksController.books[index].id,
+                            )),
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: Get.theme.primaryColor, width: 1.w),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          title: Text(
+                            booksController.books[index].name,
+                            style: Get.textTheme.bodySmall,
+                          ),
+                        ),
+                      ),
+                      40.verticalSpace
+                    ],
                   );
                 },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 5,
+                  crossAxisSpacing: 20.w,
+                ),
               ),
               50.verticalSpace,
             ],
@@ -129,6 +157,10 @@ class _BuildDirectoriesListState extends State<_BuildDirectoriesList> {
   Center _buildBookCreationButton(int index) {
     return Center(
       child: TextButton(
+        style: TextButton.styleFrom(
+            backgroundColor: Get.theme.primaryColor.withOpacity(
+          0.5,
+        )),
         onPressed: () async {
           return await Get.dialog(
             BuildCreationDialog(
@@ -140,6 +172,7 @@ class _BuildDirectoriesListState extends State<_BuildDirectoriesList> {
                 );
                 Get.back();
               },
+              title: PoemerStrings.createNewBook,
             ),
           );
         },
@@ -182,9 +215,11 @@ class _BuildNoDirectories extends StatelessWidget {
                 controller: directoriesController.newDirectoryNameController,
                 onAdd: () async {
                   await directoriesController.addNewDirectory(
-                      directoriesController.newDirectoryNameController.text);
+                    directoriesController.newDirectoryNameController.text,
+                  );
                   Get.back();
                 },
+                title: PoemerStrings.createNewDirectory,
               ),
             ),
             child: Text(

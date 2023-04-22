@@ -5,6 +5,7 @@ class PoemerStrings{
   static const String createNewBook = 'Create new book';
   static const String add = 'Add';
   static const String close = 'Close';
+  static const String typeANameHere = 'Type a name here';
 
 
 

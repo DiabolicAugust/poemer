@@ -30,12 +30,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           textTheme: TextTheme(
-            bodyMedium: TextStyle(
+
+            bodyLarge: TextStyle(
               fontSize: 65.sp
             ),
-            bodySmall: TextStyle(
+            bodyMedium: TextStyle(
               fontSize: 45.sp,
               fontWeight: FontWeight.bold
+            ),
+            bodySmall: TextStyle(
+                fontSize: 30.sp,
+                fontWeight: FontWeight.bold
             ),
           ),
         ),
